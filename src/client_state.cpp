@@ -408,7 +408,7 @@ int wsrep::client_state::begin_rsu(int timeout)
     {
         wsrep::log_warning() << "RSU failed due to pending transactions";
         server_state_.resync();
-        return 1;
+        return 2;
     }
     wsrep::seqno pause_seqno(server_state_.pause());
     if (pause_seqno.is_undefined())
