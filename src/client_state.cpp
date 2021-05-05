@@ -410,6 +410,7 @@ int wsrep::client_state::begin_rsu(int timeout)
         server_state_.resync();
         return 2;
     }
+#if 1
     wsrep::seqno pause_seqno(server_state_.pause());
     if (pause_seqno.is_undefined())
     {
@@ -417,7 +418,9 @@ int wsrep::client_state::begin_rsu(int timeout)
         server_state_.resync();
         return 1;
     }
+    fprintf(stderr, "KH: provider paused\n");
     wsrep::log_info() << "Provider paused at: " << pause_seqno;
+#endif
     wsrep::unique_lock<wsrep::mutex> lock(mutex_);
     toi_mode_ = mode_;
     mode(lock, m_rsu);
@@ -429,7 +432,10 @@ int wsrep::client_state::end_rsu()
     int ret(0);
     try
     {
+#if 1
         server_state_.resume();
+        fprintf(stderr, "KH: provider resumed\n");
+#endif
         server_state_.resync();
     }
     catch (const wsrep::runtime_error& e)
